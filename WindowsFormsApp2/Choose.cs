@@ -15,6 +15,16 @@ namespace WindowsFormsApp2
     public partial class Choose : Form
     {
         public string SelectImage;
+        private readonly string skinFolderPath = "C:\\Users\\Sofia\\Desktop\\Endless Runner\\Endless Runner\\MyClass\\Resources\\";
+        private readonly string[] skins = new string[]
+        {
+    "skins1.png",
+    "skins7.png",
+    "skins4.png",
+    "skins5.png",
+    "skins2.png",
+    "skins6.png"
+        };
         public Choose()
         {
             InitializeComponent();
@@ -29,7 +39,7 @@ namespace WindowsFormsApp2
 
         private void btn_choose1_Click(object sender, EventArgs e)
         {
-            HandleChoose("C:\\Users\\Sofia\\Desktop\\Endless Runner\\Endless Runner\\MyClass\\Resources\\skins2.png");
+            HandleChoose(Path.Combine(skinFolderPath, skins[4]));
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -49,7 +59,7 @@ namespace WindowsFormsApp2
 
         private void btn_pinkgirl_Click(object sender, EventArgs e)
         {
-            HandleChoose("C:\\Users\\Sofia\\Desktop\\Endless Runner\\Endless Runner\\MyClass\\Resources\\skins6.png");
+            HandleChoose(Path.Combine(skinFolderPath, skins[5]));
         }
 
         private void btn_girl_Click(object sender, EventArgs e)
@@ -128,22 +138,22 @@ namespace WindowsFormsApp2
 
         private void button1_Click(object sender, EventArgs e)
         {
-            HandleChoose("C:\\Users\\Sofia\\Desktop\\Endless Runner\\Endless Runner\\MyClass\\Resources\\skins1.png");
+            HandleChoose(Path.Combine(skinFolderPath, skins[0]));
         }
 
         private void button2_Click_1(object sender, EventArgs e)
         {
-            HandleChoose("C:\\Users\\Sofia\\Desktop\\Endless Runner\\Endless Runner\\MyClass\\Resources\\skins7.png");
+            HandleChoose(Path.Combine(skinFolderPath, skins[1]));
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            HandleChoose("C:\\Users\\Sofia\\Desktop\\Endless Runner\\Endless Runner\\MyClass\\Resources\\skins4.png");
+            HandleChoose(Path.Combine(skinFolderPath, skins[2]));
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            HandleChoose("C:\\Users\\Sofia\\Desktop\\Endless Runner\\Endless Runner\\MyClass\\Resources\\skins5.png");
+            HandleChoose(Path.Combine(skinFolderPath, skins[3]));
         }
     }
 }
