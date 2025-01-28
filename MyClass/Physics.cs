@@ -42,99 +42,54 @@ namespace MyClass
 
         public bool Collide()
         {
-            for (int i = 0; i < GameController.skelets.Count; i++)
+            if (CheckCollisionWithObjects(GameController.skelets))
             {
-                var skelet = GameController.skelets[i];
-                PointF delta = new PointF();
-                delta.X = (position.X + size.Width / 2) - (skelet.position.X +skelet.size.Width / 2);
-                delta.Y = (position.Y + size.Height / 2) - (skelet.position.Y + skelet.size.Height / 2);
-                if (Math.Abs(delta.X) <= size.Width / 2 + skelet.size.Width / 2)
-                {
-                    if (Math.Abs(delta.Y) <= size.Height / 2 + skelet.size.Height / 2)
-                    {
-                        skelet.position = new PointF(skelet.position.X, -100);
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-
-
-                    }
-                }
+                return true;
             }
-            for (int i = 0; i < GameController.birds.Count; i++)
+            if (CheckCollisionWithObjects(GameController.birds))
             {
-                var bird = GameController.birds[i];
-                PointF delta = new PointF();
-                delta.X = (position.X + size.Width / 2) - (bird.position.X + bird.size.Width / 2);
-                delta.Y = (position.Y + size.Height / 2) - (bird.position.Y + bird.size.Height / 2);
-                if (Math.Abs(delta.X) <= size.Width / 2 + bird.size.Width / 2)
-                {
-                    if (Math.Abs(delta.Y) <= size.Height / 2 + bird.size.Height / 2)
-                    {
-                        bird.position = new PointF(bird.position.X, -100);
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-
-
-                    }
-                }
+                return true;
             }
-            for (int i = 0; i < GameController.coins.Count; i++)
+            if (CheckCollisionWithObjects(GameController.coins))
             {
-                var coin = GameController.coins[i];
-                PointF delta = new PointF();
-                delta.X = (position.X + size.Width / 2) - (coin.position.X + coin.size.Width / 2);
-                delta.Y = (position.Y + size.Height / 2) - (coin.position.Y + coin.size.Height / 2);
-                if (Math.Abs(delta.X) <= size.Width / 2 + coin.size.Width / 2)
-                {
-                    if (Math.Abs(delta.Y) <= size.Height / 2 + coin.size.Height / 2)
-                    {
-                        GameController.coinCount++;
-
-
-                        coin.position = new PointF(coin.position.X, -100);
-
-                        return false;
-
-                    }
-
-                }
+                return false;
             }
-           
-            for (int i = 0; i < GameController.ghoats.Count; i++)
+            if (CheckCollisionWithObjects(GameController.ghoats))
             {
-                var ghoast = GameController.ghoats[i];
-                PointF delta = new PointF();
-                delta.X = (position.X + size.Width / 2) - (ghoast.position.X + ghoast.size.Width / 2);
-                delta.Y = (position.Y + size.Height / 2) - (ghoast.position.Y + ghoast.size.Height / 2);
-                if (Math.Abs(delta.X) <= size.Width / 2 + ghoast.size.Width / 2)
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool CheckCollisionWithObjects<T>(IEnumerable<T> objects) where T : Transform
+        {
+            foreach (var obj in objects)
+            {
+                if (CheckCollision(obj))
                 {
-                    if (Math.Abs(delta.Y) <= size.Height / 2 + ghoast.size.Height / 2)
-                    {
-                        
-
-
-                        ghoast.position = new PointF(ghoast.position.X, -100);
-
-                        return true;
-
-                    }
-                    else
-                    {
-                        return false;
-                        
-
-                    }
-
+                    HandleCollisionWithObject(obj);
+                    return true;
                 }
             }
             return false;
         }
+
+        private bool CheckCollision(Transform obj)
+        {
+            PointF delta = new PointF();
+            delta.X = (position.X + size.Width / 2) - (obj.position.X + obj.size.Width / 2);
+            delta.Y = (position.Y + size.Height / 2) - (obj.position.Y + obj.size.Height / 2);
+
+            return Math.Abs(delta.X) <= size.Width / 2 + obj.size.Width / 2 &&
+                   Math.Abs(delta.Y) <= size.Height / 2 + obj.size.Height / 2;
+        }
+
+        private void HandleCollisionWithObject(Transform obj)
+        {
+            obj.position = new PointF(obj.position.X, -100); // Виконання дії після колізії
+        }
+
         public void Addforce()
         {
             if (!isJumping)
