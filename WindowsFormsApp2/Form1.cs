@@ -195,7 +195,7 @@ namespace WindowsFormsApp2
 
         private void GameOver()
         {
-            Choose.wmp.controls.stop();
+            AudioManager.wmp.controls.stop(); ;
             restart_1.Visible = true;
             back_to_menu.Visible = true;
             pause.Enabled = false;
@@ -215,7 +215,7 @@ namespace WindowsFormsApp2
 
             if (!mainTimer.Enabled)
             {
-                Choose.wmp.controls.stop();
+                AudioManager.wmp.controls.stop();
 
                 restart_1.Visible = true;
             }
@@ -232,8 +232,8 @@ namespace WindowsFormsApp2
             restart_1.Visible = false;
             back_to_menu.Visible = false;
             mainTimer.Enabled = true;
-            Choose.wmp.settings.setMode("loop", true);
-            Choose.wmp.controls.play();
+            AudioManager.wmp.settings.setMode("loop", true);
+            AudioManager.wmp.controls.play();
         }
 
         private void restart_1_Click_1(object sender, EventArgs e)
@@ -255,7 +255,7 @@ namespace WindowsFormsApp2
         private void pause_Click(object sender, EventArgs e)
         {
             mainTimer.Stop();
-            Choose.wmp.controls.pause();
+            AudioManager.wmp.controls.pause();
             pictureBox2gameover.Visible = false;
             continue_1.Visible = true;
             restart_1.Visible = true;
@@ -274,8 +274,9 @@ namespace WindowsFormsApp2
            EditData(data);
         }
 
+        private void pictureBox2gameover_Click(object sender, EventArgs e)
+        {
 
-       
-      
+        }
     }
 }

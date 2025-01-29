@@ -16,18 +16,15 @@ namespace WindowsFormsApp2
     {
         public string SelectImage;
         private readonly string skinFolderPath = "C:\\Users\\Sofia\\Desktop\\Endless Runner\\Endless Runner\\MyClass\\Resources\\";
-        private readonly string[] skins = new string[]
-        {
-    "skins1.png",
-    "skins7.png",
-    "skins4.png",
-    "skins5.png",
-    "skins2.png",
-    "skins6.png"
-        };
+        private AudioManager audioManager;
+        private int coins;
+        private List<string> ownedSkins;
         public Choose()
         {
             InitializeComponent();
+            audioManager = new AudioManager();
+            ownedSkins = new List<string>();
+
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -35,83 +32,55 @@ namespace WindowsFormsApp2
             Application.Exit();
         }
 
-        public static WindowsMediaPlayer wmp = new WindowsMediaPlayer();
 
         private void btn_choose1_Click(object sender, EventArgs e)
         {
-            HandleChoose(Path.Combine(skinFolderPath, skins[4]));
+            HandleChoose(4);
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            HandleBuy("1");
+            HandleBuy(1);
         }
 
         private void btn_purplegirl_Click(object sender, EventArgs e)
         {
-            HandleBuy("4");
+            HandleBuy(4);
         }
 
         private void btn_purpleboy_Click(object sender, EventArgs e)
         {
-            HandleBuy("3");
+            HandleBuy(3);
         }
 
         private void btn_pinkgirl_Click(object sender, EventArgs e)
         {
-            HandleChoose(Path.Combine(skinFolderPath, skins[5]));
+            HandleChoose(5);
         }
 
         private void btn_girl_Click(object sender, EventArgs e)
         {
-            HandleBuy("2");
+            HandleBuy(2);
         }
 
         private void Choose_Load(object sender, EventArgs e)
         {
 
-            var data = DataManager.LoadData();
-            var skins = data.Skins;
-            if (skins.Contains(btn_redboy.Tag))
-            {
-                panel1.Hide();
-                button1.Visible = true;
-                button1.Location = new Point(455, 155);
-            }
-            if (skins.Contains(btn_girl.Tag))
-            {
-                panel3.Hide();
-                button2.Visible = true;
-                button2.Location = new Point(72, 339);
-            }
-            if (skins.Contains(btn_purpleboy.Tag))
-            {
-                panel2.Hide();
-                button3.Visible = true;
-                button3.Location = new Point(265, 335);
-            }
-            if (skins.Contains(btn_purplegirl.Tag))
-            {
-                panel4.Hide();
-                button4.Visible = true;
-                button4.Location = new Point(455, 335);
-            }
-            money.Text = data.Coins.ToString();
+          
+            UpdateUI();
 
         }
-        private void HandleChoose(string skin)
+        private void HandleChoose(int skin)
         {
-            SelectImage = skin;
+            SkinManager skinManager = new SkinManager();
+            SelectImage = skinManager.GetSkinPath(skin);
             DialogResult = DialogResult.OK;
             Form1 form1 = new Form1(SelectImage);
             form1.Show();
             try
             {
-                wmp.URL = @"C:\Users\Sofia\Desktop\Endless Runner\Endless Runner\WindowsFormsApp2\Resources\hhhhhhhhhhhhhhhh.wav";
                 var data = DataManager.LoadData();
-                wmp.settings.volume = data.Volume;
-                wmp.settings.setMode("loop", true);
-                wmp.controls.play();
+               AudioManager.PlayAudio(@"C:\Users\Sofia\Desktop\Endless Runner\Endless Runner\WindowsFormsApp2\Resources\hhhhhhhhhhhhhhhh.wav");
             }
             catch (Exception ex)
             {
@@ -120,40 +89,82 @@ namespace WindowsFormsApp2
 
             Hide();
         }
-        private void HandleBuy(string id)
+        private void UpdateUI()
         {
             var data = DataManager.LoadData();
-            if (data.Coins >= 10)
+            var skins = data.Skins.Select(int.Parse).ToList();
+
+            if (skins.Contains(1))
             {
-                data.Coins -= 10;
-                data.Skins.Add(id);
-                DataManager.EditData(data);
-                Choose choose = new Choose();
-                choose.Show();
-                Hide();
+                panel1.Hide();
+                button1.Visible = true;
+                button1.Location = new Point(455, 155);
             }
-            else MessageBox.Show("Недостатньо монет для покупки цього персонажа");
+            if (skins.Contains(2))
+            {
+                panel3.Hide();
+                button2.Visible = true;
+                button2.Location = new Point(72, 339);
+            }
+            if (skins.Contains(3))
+            {
+                panel2.Hide();
+                button3.Visible = true;
+                button3.Location = new Point(265, 335);
+            }
+            if (skins.Contains(4))
+            {
+                panel4.Hide();
+                button4.Visible = true;
+                button4.Location = new Point(455, 335);
+            }
+
+            // Оновлення тексту кількості монет
+            money.Text = data.Coins.ToString();
         }
-       
+
+        private void HandleBuy(int skinIndex)
+        {
+            SkinManager skinManager = new SkinManager();
+            string id= skinIndex.ToString();
+
+            if (skinManager.PurchaseSkin(id, ref coins, ownedSkins))
+            {
+                var data = DataManager.LoadData();
+                data.Coins = coins;
+                data.Skins = ownedSkins.Select(skin => skin.ToString()).ToList();
+                DataManager.EditData(data);
+
+                money.Text = coins.ToString();
+                UpdateUI();
+
+                MessageBox.Show("Шкіра успішно куплена!");
+            }
+            else
+            {
+                MessageBox.Show("Не вистачає монет для покупки цієї шкіри");
+            }
+        }
+
 
         private void button1_Click(object sender, EventArgs e)
         {
-            HandleChoose(Path.Combine(skinFolderPath, skins[0]));
+            HandleChoose(0);
         }
 
         private void button2_Click_1(object sender, EventArgs e)
         {
-            HandleChoose(Path.Combine(skinFolderPath, skins[1]));
+            HandleChoose(1);
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            HandleChoose(Path.Combine(skinFolderPath, skins[2]));
+            HandleChoose(2);
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            HandleChoose(Path.Combine(skinFolderPath, skins[3]));
+            HandleChoose(3);
         }
     }
 }

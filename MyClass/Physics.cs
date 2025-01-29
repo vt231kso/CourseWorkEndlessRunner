@@ -50,7 +50,7 @@ namespace MyClass
             {
                 return true;
             }
-            if (CheckCollisionWithObjects(GameController.coins))
+            if (CheckCollisionWithObjects(GameController.coins, isCoin: true))
             {
                 return false;
             }
@@ -62,12 +62,16 @@ namespace MyClass
             return false;
         }
 
-        private bool CheckCollisionWithObjects<T>(IEnumerable<T> objects) where T : Transform
+        private bool CheckCollisionWithObjects<T>(IEnumerable<T> objects, bool isCoin=false) where T : Transform
         {
             foreach (var obj in objects)
             {
                 if (CheckCollision(obj))
                 {
+                    if (isCoin)
+                    {
+                        GameController.coinCount++;
+                    }
                     HandleCollisionWithObject(obj);
                     return true;
                 }
