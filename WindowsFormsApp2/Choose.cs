@@ -128,7 +128,7 @@ namespace WindowsFormsApp2
             SkinManager skinManager = new SkinManager();
             string id= skinIndex.ToString();
 
-            if (skinManager.PurchaseSkin(id, ref coins, ownedSkins))
+            if (SkinShop.PurchaseSkin(id, ref coins, ownedSkins))
             {
                 var data = DataManager.LoadData();
                 data.Coins = coins;

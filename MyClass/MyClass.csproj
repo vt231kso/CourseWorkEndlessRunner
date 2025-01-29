@@ -60,6 +60,7 @@
     <Compile Include="Road.cs" />
     <Compile Include="Skelet.cs" />
     <Compile Include="SkinManager.cs" />
+    <Compile Include="SkinShop.cs" />
     <Compile Include="Transform.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

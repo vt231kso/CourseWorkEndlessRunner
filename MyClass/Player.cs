@@ -14,14 +14,14 @@ namespace MyClass
         public int animationCount = 0;
         public int score = 0;
         private int distanceCounter;
-        private Image playerImage;
+        private BitmapImage playerImage;
         public Player(PointF position, Size size, Image playerImage) : base(position, size)
         {
             this.playerImage = playerImage;
             framesCount = 0;
             score = 0;
             distanceCounter = 0;
-  }
+        }
         public void UpdateScore()
         {
             distanceCounter += 7; 
