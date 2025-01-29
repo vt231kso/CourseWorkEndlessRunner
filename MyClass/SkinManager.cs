@@ -23,17 +23,5 @@ namespace MyClass
             }
             throw new ArgumentException($"Invalid skin index: {skinIndex}. Valid range is from 0 to {skins.Length - 1}.");
         }
-
-        public bool PurchaseSkin(string skinId, ref int coins, List<string> ownedSkins)
-        {
-           
-            if (coins >= 10)
-            {
-                coins -= 10;
-                ownedSkins.Add(skinId);
-                return true;
-            }
-            return false;
-        }
     }
 }
