@@ -91,6 +91,7 @@
             this.pictureBox2gameover.TabIndex = 7;
             this.pictureBox2gameover.TabStop = false;
             this.pictureBox2gameover.Visible = false;
+            this.pictureBox2gameover.Click += new System.EventHandler(this.pictureBox2gameover_Click);
             // 
             // pause
             // 

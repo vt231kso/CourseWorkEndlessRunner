@@ -84,6 +84,7 @@
             this.btn_sound.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.btn_sound.TabIndex = 1;
             this.btn_sound.TabStop = false;
+            this.btn_sound.Click += new System.EventHandler(this.btn_sound_Click);
             // 
             // trackBar1
             // 

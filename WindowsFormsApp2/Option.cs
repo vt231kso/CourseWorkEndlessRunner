@@ -23,10 +23,10 @@ namespace WindowsFormsApp2
 
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
-            Choose.wmp.URL = @"C:\Users\Sofia\Desktop\Endless Runner\Endless Runner\WindowsFormsApp2\Resources\hhhhhhhhhhhhhhhh.wav";
-            Choose.wmp.controls.play();
+            AudioManager.wmp.URL = @"C:\Users\Sofia\Desktop\Endless Runner\Endless Runner\WindowsFormsApp2\Resources\hhhhhhhhhhhhhhhh.wav";
+            AudioManager.wmp.controls.play();
             btn_sound.Image = Properties.Resources.sound_on;
-            Choose.wmp.settings.volume = trackBar1.Value;
+            AudioManager.wmp.settings.volume = trackBar1.Value;
             var data = DataManager.LoadData();
             data.Volume = trackBar1.Value;
             
@@ -39,7 +39,7 @@ namespace WindowsFormsApp2
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            Choose.wmp.controls.stop();
+            AudioManager.wmp.controls.stop();
            Menu menu = new Menu();
             menu.Show();
             this.Close(); // Закриваємо поточну форму
@@ -51,6 +51,11 @@ namespace WindowsFormsApp2
         }
 
         private void option_menu_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void btn_sound_Click(object sender, EventArgs e)
         {
 
         }
