@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyClass
 {
     public class Skelet : Transform
     {
-
         int srcX = 0;
         int srcY = 0;
         int srcW = 0;
@@ -20,74 +16,48 @@ namespace MyClass
         public Skelet(PointF pos, Size size) : base(pos, size)
         {
 
-
         }
+
+        private struct AnimationFrame
+        {
+            public int SrcX, SrcY, SrcW, SrcH, AnimationCount;
+
+            public AnimationFrame(int SrcX, int SrcY, int SrcW, int SrcH, int AnimationCount)
+            {
+                this.SrcX = SrcX;
+                this.SrcY = SrcY;
+                this.SrcW = SrcW;
+                this.SrcH = SrcH;
+                this.AnimationCount = AnimationCount;
+            }
+        }
+
+        private static readonly List<AnimationFrame> AnimationFrames= new List<AnimationFrame>
+        {
+            new AnimationFrame(340, 240, 90, 60, 0),
+            new AnimationFrame(440, 240, 90, 60, 1),
+            new AnimationFrame(10, 360, 130, 60, 2),
+            new AnimationFrame(140, 330, 100, 90, 3),
+            new AnimationFrame(280, 330, 100, 90, 4),
+            new AnimationFrame(410, 330, 100, 90, 5) 
+        };
 
         public override void DrawSprite(Graphics g)
         {
             frameCount++;
-            if (frameCount <= 500)
-            {
-                srcX = 340;
-                srcY = 240;
-                srcW = 90;
-                srcH = 60;
-                animationCount = 0;
-            }
-            else if (frameCount > 500 && frameCount <= 550)
-            {
-                srcX = 440;
-                srcY = 240;
-                srcW = 90;
-                srcH = 60;
-                animationCount = 1;
-            }
-            else if (frameCount > 550 && frameCount <= 600)
-            {
-                srcX = 10;
-                srcY = 360;
-                srcW = 130;
-                srcH = 60;
-                animationCount = 2;
-            }
-            else if (frameCount > 600 && frameCount <= 650)
-            {
-                srcX = 140;
-                srcY = 330;
-                srcW = 100;
-                srcH = 90;
 
-                animationCount = 3;
-            }
-            else if (frameCount > 650 && frameCount <= 700)
-            {
-                srcX = 280;
-                srcY = 330;
-                srcW = 100;
-                srcH = 90;
-                animationCount = 4;
-            }
-            else if (frameCount > 700 && frameCount <= 750)
-            {
-                srcX = 410;
-                srcY = 330;
-                srcW = 100;
-                srcH = 90;
-                animationCount = 5;
-            }
+            int frameIndex = Math.Min(frameCount / 50, AnimationFrames.Count - 1);
 
-            if (frameCount > 750)
-            {
-                srcX = 410;
-                srcY = 330;
-                srcW = 100;
-                srcH = 90;
-            }
+            var frame = AnimationFrames[frameIndex];
 
+            int srcX = frame.SrcX;
+            int srcY = frame.SrcY;
+            int srcW = frame.SrcW;
+            int srcH = frame.SrcH;
+            int animationCount = frame.AnimationCount;
 
             g.DrawImage(GameController.halloween, new Rectangle((int)position.X, (int)position.Y, (int)size.Width, size.Height),
                 srcX, srcY, srcW, srcH, GraphicsUnit.Pixel);
         }
-
     }
 }
