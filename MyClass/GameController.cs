@@ -59,40 +59,24 @@ namespace MyClass
                     roads.RemoveAt(i);
                 }
             }
-            for (int i = 0; i < skelets.Count; i++)
-            {
-                skelets[i].position = new PointF(skelets[i].position.X - 7, skelets[i].position.Y);
-                if (skelets[i].position.X + skelets[i].size.Width < 0)
-                {
-                    skelets.RemoveAt(i);
-                }
-            }
-            for (int i = 0; i < birds.Count; i++)
-            {
-                birds[i].position = new PointF(birds[i].position.X - 7, birds[i].position.Y);
-                if (birds[i].position.X + roads[i].size.Width < 0)
-                {
-                    birds.RemoveAt(i);
-                }
-            }
-            for (int i = 0; i < coins.Count; i++)
-            {
-                coins[i].position = new PointF(coins[i].position.X - 7, coins[i].position.Y);
-                if (coins[i].position.X + roads[i].size.Width < 0)
-                {
-                    coins.RemoveAt(i);
-                }
-            }
-            for (int i = 0; i < ghoats.Count; i++)
-            {
-                ghoats[i].position = new PointF(ghoats[i].position.X - 7, ghoats[i].position.Y);
-                if (ghoats[i].position.X + roads[i].size.Width < 0)
-                {
-                    ghoats.RemoveAt(i);
-                }
-            }
-          
 
+
+            MoveEntities(skelets);
+            MoveEntities(birds);
+            MoveEntities(coins);
+            MoveEntities(ghoats);
+        }
+
+        public static void MoveEntities<T>(List<T> Entities) where T : Transform
+        {
+            for (int i = 0; i < Entities.Count; i++)
+            { 
+                Entities[i].position = new PointF(Entities[i].position.X - 7, Entities[i].position.Y);
+                if (Entities[i].position.X + roads[i].size.Width < 0)
+                {
+                    Entities.RemoveAt(i);
+                }
+            }
         }
 
         public static void GetNewRoad()
@@ -152,34 +136,18 @@ namespace MyClass
 
         public static void DrawObjets(Graphics g)
         {
-            for (int i = 0; i < roads.Count; i++)
-            {
-                roads[i].DrawSprite(g);
-            }
-            for (int i = 0; i < skelets.Count; i++)
-            {
-                skelets[i].DrawSprite(g);
-            }
-            for (int i = 0; i < birds.Count; i++)
-            {
-                birds[i].DrawSprite(g);
-            }
-            for (int i = 0; i < ghoats.Count; i++)
-            {
-                ghoats[i].DrawSprite(g);
-            }
-            for (int i = 0; i < coins.Count; i++)
-            {
-                coins[i].DrawSprite(g);
-            }
+            roads.ForEach(road => road.DrawSprite(g));
+            skelets.ForEach(skelet => skelet.DrawSprite(g));
+            birds.ForEach(bird => bird.DrawSprite(g));
+            ghoats.ForEach(ghoat => ghoat.DrawSprite(g));
+            coins.ForEach(coin => coin.DrawSprite(g));
 
             backgroundShift -= 1;
+
             if (backgroundShift <= -back.Width)
             {
                 backgroundShift = 0;
             }
-            
         }
-      
     }
 }
