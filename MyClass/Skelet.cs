@@ -1,27 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 
 namespace MyClass
 {
     public class Skelet : Transform
     {
-
-        int srcX = 0;
-        int srcY = 0;
-        int srcW = 0;
-        int srcH = 0;
+        private int srcX = 0;
+        private int srcY = 0;
+        private int srcW = 0;
+        private int srcH = 0;
         public int frameCount = 0;
         public int animationCount = 0;
 
-        public Skelet(PointF pos, Size size) : base(pos, size)
-        {
-
-
-        }
+        public Skelet(TransformData transformData) : base(transformData) { }
 
         public override void DrawSprite(Graphics g)
         {
@@ -56,7 +46,6 @@ namespace MyClass
                 srcY = 330;
                 srcW = 100;
                 srcH = 90;
-
                 animationCount = 3;
             }
             else if (frameCount > 650 && frameCount <= 700)
@@ -84,10 +73,14 @@ namespace MyClass
                 srcH = 90;
             }
 
-
-            g.DrawImage(GameController.halloween, new Rectangle((int)position.X, (int)position.Y, (int)size.Width, size.Height),
-                srcX, srcY, srcW, srcH, GraphicsUnit.Pixel);
+            g.DrawImage(
+                GameController.halloween,
+                new Rectangle(
+                    new Point((int)TransformData.Position.X, (int)TransformData.Position.Y),
+                    new Size(TransformData.Size.Width, TransformData.Size.Height)
+                ),
+                srcX, srcY, srcW, srcH, GraphicsUnit.Pixel
+            );
         }
-
     }
 }
