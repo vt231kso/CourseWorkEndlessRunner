@@ -1,77 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyClass
 {
     public class Physics : Transform
     {
+        public float Gravity { get; set; }
+        public float Acceleration { get; set; }
+        public bool IsJumping { get; set; }
+        public bool IsCrouching { get; set; }
 
-        public float gravity;
-        public float a;
-
-        public bool isJumping;
-        public bool isCrouching;//присяд
-
-        public Physics(PointF position, Size size) : base(position, size)
+        public Physics(TransformData transformData) : base(transformData)
         {
-
-            gravity = 0;
-            a = 0.4f;
-            isJumping = false;
-            isCrouching = false;
+            Gravity = 0;
+            Acceleration = 0.4f;
+            IsJumping = false;
+            IsCrouching = false;
         }
+
         public void ApplyPhysics()
         {
-            CalculatePhysics();
-        }
-        public void CalculatePhysics()
-        {
-            if (position.Y < 240 || isJumping)
+            if (TransformData.Position.Y < 240 || IsJumping)
             {
-                position = new PointF(position.X, position.Y + gravity);
-                gravity += a;
+                TransformData.Position = new PointF(
+                    TransformData.Position.X,
+                    TransformData.Position.Y + Gravity
+                );
+                Gravity += Acceleration;
             }
-            if (position.Y > 240)
-                isJumping = false;
         }
-
 
         public bool Collide()
         {
-            if (CheckCollisionWithObjects(GameController.skelets))
-            {
-                return true;
-            }
-            if (CheckCollisionWithObjects(GameController.birds))
-            {
-                return true;
-            }
-            if (CheckCollisionWithObjects(GameController.coins, isCoin: true))
-            {
-                return false;
-            }
-            if (CheckCollisionWithObjects(GameController.ghoats))
-            {
-                return true;
-            }
+            if (CheckCollisionWithObjects(GameController.skelets)) return true;
+            if (CheckCollisionWithObjects(GameController.birds)) return true;
+            if (CheckCollisionWithObjects(GameController.coins, isCoin: true)) return false;
+            if (CheckCollisionWithObjects(GameController.ghoats)) return true;
 
             return false;
         }
 
-        private bool CheckCollisionWithObjects<T>(IEnumerable<T> objects, bool isCoin=false) where T : Transform
+        private bool CheckCollisionWithObjects<T>(IEnumerable<T> objects, bool isCoin = false) where T : Transform
         {
             foreach (var obj in objects)
             {
                 if (CheckCollision(obj))
                 {
-                    if (isCoin)
-                    {
-                        GameController.coinCount++;
-                    }
+                    if (isCoin) GameController.coinCount++;
                     HandleCollisionWithObject(obj);
                     return true;
                 }
@@ -81,25 +57,26 @@ namespace MyClass
 
         private bool CheckCollision(Transform obj)
         {
-            PointF delta = new PointF();
-            delta.X = (position.X + size.Width / 2) - (obj.position.X + obj.size.Width / 2);
-            delta.Y = (position.Y + size.Height / 2) - (obj.position.Y + obj.size.Height / 2);
+            PointF delta = new PointF(
+                (TransformData.Position.X + TransformData.Size.Width / 2) - (obj.TransformData.Position.X + obj.TransformData.Size.Width / 2),
+                (TransformData.Position.Y + TransformData.Size.Height / 2) - (obj.TransformData.Position.Y + obj.TransformData.Size.Height / 2)
+            );
 
-            return Math.Abs(delta.X) <= size.Width / 2 + obj.size.Width / 2 &&
-                   Math.Abs(delta.Y) <= size.Height / 2 + obj.size.Height / 2;
+            return Math.Abs(delta.X) <= TransformData.Size.Width / 2 + obj.TransformData.Size.Width / 2 &&
+                   Math.Abs(delta.Y) <= TransformData.Size.Height / 2 + obj.TransformData.Size.Height / 2;
         }
 
         private void HandleCollisionWithObject(Transform obj)
         {
-            obj.position = new PointF(obj.position.X, -100); // Виконання дії після колізії
+            obj.TransformData.Position = new PointF(obj.TransformData.Position.X, -100);
         }
 
         public void Addforce()
         {
-            if (!isJumping)
+            if (!IsJumping)
             {
-                isJumping = true;
-                gravity = -10;
+                IsJumping = true;
+                Gravity = -10;
             }
         }
     }

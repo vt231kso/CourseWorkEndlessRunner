@@ -1,23 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 
 namespace MyClass
 {
     public class Ghoast : Transform
     {
-
         int frameCount = 0;
-      
         int srcX = 0;
 
-
-        public Ghoast(PointF pos, Size size) : base(pos, size)
-        {
-        }
+        public Ghoast(TransformData transformData) : base(transformData) { }
 
         public override void DrawSprite(Graphics g)
         {
@@ -25,7 +15,6 @@ namespace MyClass
             if (frameCount <= 20)
             {
                 srcX = 10;
-
             }
             else if (frameCount > 20 && frameCount <= 40)
             {
@@ -39,10 +28,18 @@ namespace MyClass
             {
                 srcX = 410;
             }
+
             if (frameCount > 80)
                 frameCount = 0;
 
-            g.DrawImage(GameController.halloween, new Rectangle(new Point((int)position.X, (int)position.Y), new Size(size.Width, size.Height)), srcX, 10, 130, 80, GraphicsUnit.Pixel);
+            g.DrawImage(
+                GameController.halloween,
+                new Rectangle(
+                    new Point((int)TransformData.Position.X, (int)TransformData.Position.Y),
+                    new Size(TransformData.Size.Width, TransformData.Size.Height)
+                ),
+                srcX, 10, 130, 80, GraphicsUnit.Pixel
+            );
         }
     }
 }
