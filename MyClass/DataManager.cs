@@ -16,35 +16,38 @@ namespace MyClass
         public int Volume {  get; set; } = 50;
         public List<string> Skins { get; set; } = new List<string>();
     }
+
     public static class DataManager
     {
+        private static readonly string _dataPath = @"./data.json";
+
         public static Data LoadData()
         {
+            Data data;
 
             if (File.Exists("data.json"))
             {
-                string textData = File.ReadAllText(@"./data.json");
-                var data = JsonSerializer.Deserialize<Data>(textData);
-                return data;
+                string textData = File.ReadAllText(_dataPath);
+                data = JsonSerializer.Deserialize<Data>(textData);
             }
             else
             {
-                var data = new Data();
+                data = new Data();
                 string json = JsonSerializer.Serialize(data);
-
-                File.WriteAllText(@"./data.json", json);
-                return data;
+                File.WriteAllText(_dataPath, json);
             }
 
+            return data;
         }
+
         public static void EditData(Data data)
         {
-            if (File.Exists("data.json"))
-            {
-                string json = JsonSerializer.Serialize(data);
+            if (!File.Exists(_dataPath))
+                return;
 
-                File.WriteAllText(@"./data.json", json);
-            }
+            string json = JsonSerializer.Serialize(data);
+
+            File.WriteAllText(_dataPath, json);
         }
     }
   
