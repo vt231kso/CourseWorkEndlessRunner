@@ -145,14 +145,13 @@ namespace WindowsFormsApp2
 
         public void Update(object sender, EventArgs e)
         {
-            player.UpdateScore(); 
+            player.UpdateScore();
             label1.Text = GameController.coinCount.ToString();
-            
-
-         
             labelScore.Text = player.score.ToString();
 
-            if (player.Collide() && !collisionHandled)
+            bool hasCollided = player.Collide(); // Викликаємо метод один раз
+
+            if (hasCollided && !collisionHandled)
             {
                 collisionHandled = true;
                 --life;
@@ -166,16 +165,12 @@ namespace WindowsFormsApp2
                     GameOver();
                 }
             }
-            else if (!player.Collide())
+            else if (!hasCollided)
             {
                 collisionHandled = false;
             }
-
-            UpdateLifeIndicators();
-            player.ApplyPhysics();
-            GameController.MoveMap();
-            Invalidate();
         }
+
 
         private bool collisionHandled = false;
         private void UpdateLifeIndicators()
